@@ -115,6 +115,20 @@ Stop interacting and ask for the user's help when:
 
 Preserve the current page and completed work while waiting. Do not try to bypass the blocking control.
 
+## User-controlled steps: wait and resume
+
+When progress depends on an intermediate choice or click that only the user may make:
+
+1. Distinguish the intermediate step from final submission. This wait-and-resume workflow never authorizes **Submit**, **Turn In**, **Send**, **Finish**, or another final action.
+2. Save a checkpoint in the answer ledger: current page or section, last verified answer, unresolved field, and the next safe action.
+3. Tell the user exactly which visible control or choice they must handle. Do not ask them to reveal a password, authentication code, signature, payment detail, or other sensitive value in chat.
+4. Define a non-sensitive visible completion signal, such as a modal closing, a section appearing, a URL or heading changing, or the relevant control showing a completed state.
+5. When the selected browser's documented interface supports waiting for that state change, arm the wait before inviting the user to act. Keep the current task and tab active, use bounded wait intervals with concise progress updates when necessary, and do not poll rapidly or use hidden page state.
+6. As soon as the completion signal appears, re-inspect the affected area, confirm the page is stable, update the answer ledger, and resume from the next unresolved item without making the user restate the task.
+7. If the browser cannot maintain the wait, disconnects, or times out, leave the page untouched and ask the user to reply when the step is complete. On their reply, reconnect to the same tab, verify the visible state, and continue from the saved checkpoint.
+
+For sign-in, multi-factor authentication, CAPTCHA, consent, signatures, payments, and legal attestations, observe only the resulting non-sensitive page state. Never inspect or capture the user's secret input. On the final review page, stop and hand control back; do not keep a listener active for submission.
+
 ## Required final audit
 
 Perform two passes before handing control back to the user.
