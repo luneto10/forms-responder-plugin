@@ -1,6 +1,6 @@
 {
   "name": "forms-responder",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Careful browser form completion and source-review workflows that never submit.",
   "author": {
     "name": "luneto10",
@@ -33,6 +33,8 @@
       "Review this form's video or reading and answer from evidence.",
       "Audit every answer on this form without submitting it."
     ],
-    "brandColor": "#2563EB"
+    "brandColor": "#2563EB",
+    "composerIcon": "./assets/forms-responder-icon.png",
+    "logo": "./assets/forms-responder-icon.png"
   }
 }

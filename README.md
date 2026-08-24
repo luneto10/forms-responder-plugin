@@ -56,6 +56,8 @@ The plugin may fill or review a form when requested, but it must stop before any
 .agents/plugins/marketplace.json
 plugins/forms-responder/
 ├── .codex-plugin/plugin.json
+├── assets/
+│   └── forms-responder-icon.png
 └── skills/
     ├── careful-form-responder/
     └── form-source-reviewer/
