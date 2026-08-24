@@ -1,0 +1,4 @@
+interface:
+  display_name: "Form Study Memory"
+  short_description: "Save and retrieve confirmed study records"
+  default_prompt: "Use $form-study-memory to find my saved quiz records and make a study summary."

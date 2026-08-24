@@ -159,3 +159,9 @@ Leave the completed or reviewed form open for the user. Summarize every answered
 Use the full question text when practical; for a very long prompt, use a concise faithful version. Include the exact answer entered or recommended and a brief evidence-based reason. If an answer remains uncertain or requires the user's personal input, state that briefly in the reason instead of adding another column.
 
 End with a clear statement that the form was **not submitted** and identify any fields the user must review, supply, attest to, or submit themselves.
+
+## Optional post-form study memory
+
+After the required handoff table and the statement that nothing was submitted, infer the likely course or class, quiz or assignment, and study topics from trusted visible context. Ask whether the user wants to save the record under those inferred labels or use different ones. Do not save during that handoff turn or interpret silence as consent.
+
+If the user explicitly confirms saving, use the `form-study-memory` skill to create the local record. Keep the browser form open and unchanged. Saving study material is separate from submission and never authorizes clicking a final form control.
