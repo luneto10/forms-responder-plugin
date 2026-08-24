@@ -1,0 +1,6 @@
+interface:
+  display_name: "Careful Form Responder"
+  short_description: "Answer browser forms carefully; never submit"
+  default_prompt: "Use $careful-form-responder to complete this form carefully and stop before submission."
+policy:
+  allow_implicit_invocation: true

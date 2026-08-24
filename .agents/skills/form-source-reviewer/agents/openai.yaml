@@ -1,0 +1,6 @@
+interface:
+  display_name: "Form Source Reviewer"
+  short_description: "Review video and source evidence for forms"
+  default_prompt: "Use $form-source-reviewer to review the source material and answer the related form questions."
+policy:
+  allow_implicit_invocation: true

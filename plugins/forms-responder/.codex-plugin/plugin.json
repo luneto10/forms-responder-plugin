@@ -1,0 +1,38 @@
+{
+  "name": "forms-responder",
+  "version": "1.0.0",
+  "description": "Careful browser form completion and source-review workflows that never submit.",
+  "author": {
+    "name": "luneto10",
+    "url": "https://github.com/luneto10"
+  },
+  "homepage": "https://github.com/luneto10/forms-responder-plugin",
+  "repository": "https://github.com/luneto10/forms-responder-plugin",
+  "license": "MIT",
+  "keywords": [
+    "forms",
+    "browser",
+    "surveys",
+    "lms",
+    "source-review"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Forms Responder",
+    "shortDescription": "Careful browser form answers that never submit",
+    "longDescription": "Carefully completes and audits browser forms, LMS pages, surveys, and source-based questions. Reviews required videos and readings, verifies every answer, and always leaves final submission to the user.",
+    "developerName": "luneto10",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Complete this browser form carefully and stop before submission.",
+      "Review this form's video or reading and answer from evidence.",
+      "Audit every answer on this form without submitting it."
+    ],
+    "brandColor": "#2563EB"
+  }
+}
