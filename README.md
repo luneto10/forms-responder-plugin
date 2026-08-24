@@ -19,6 +19,8 @@ Consensus is optional. When installed separately, it may support outside scienti
 
 ## Install from GitHub
 
+This repository is private. On each computer, sign in to the `luneto10` GitHub account with Git or GitHub CLI before adding the marketplace.
+
 Add this repository as a Codex marketplace:
 
 ```bash
