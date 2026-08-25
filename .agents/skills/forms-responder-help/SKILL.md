@@ -27,7 +27,7 @@ Make the non-submission boundary prominent. Explain that the plugin does not gue
 ## Storage explanation
 
 - Local memory is the default when Google Drive is not named. It stores Markdown, JSON, and a searchable index in the user's application-data directory.
-- Google Drive is a separate, explicit backend. The user must say Google Drive and identify or approve a destination folder. A successful Drive save creates the study document there and does not keep another persistent local copy.
+- Google Drive is a separate, explicit backend. The user must say Google Drive and identify or approve a destination folder. A successful Drive save creates a canonical JSON record and a matching human-readable Markdown companion there, treats them as one logical quiz, and does not keep persistent local copies.
 - If Google Drive capability is not available or connected, state that clearly and tell the user to enable/connect the Google Drive plugin. Never claim the save succeeded and never silently switch to local storage.
 
 ## Help-only boundary

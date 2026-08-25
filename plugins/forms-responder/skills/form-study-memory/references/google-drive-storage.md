@@ -21,15 +21,16 @@ If the Google Drive plugin is unavailable, disabled, disconnected, or requests a
 4. Create only the confirmed missing folder. A useful default layout is a root study-memory folder with one child folder per course. If the user identifies a course folder directly, save there without creating a duplicate nested course folder.
 5. Preserve the folder's existing organization and sharing permissions.
 
-## Create one Drive record
+## Create one paired Drive record
 
-Use an append-only Markdown file so the record remains readable and searchable without a local index. Give it a collision-resistant name such as:
+Store two append-only files with the same generated basename and record ID:
 
 ```text
+2026-08-24 - BIO 101 - Quiz 3 - 20260824T235716Z-a1b2c3d4.json
 2026-08-24 - BIO 101 - Quiz 3 - 20260824T235716Z-a1b2c3d4.md
 ```
 
-The file content must include:
+The JSON file is the canonical machine-readable record. The Markdown file is the human-readable companion. Both must represent the same:
 
 - course or class;
 - quiz or assignment;
@@ -39,17 +40,38 @@ The file content must include:
 - the exact `Question | Answer | Why this is correct` table;
 - optional non-sensitive notes or source URL.
 
-Render the Markdown in an isolated temporary file, upload it to the resolved folder as `text/markdown`, and then verify the returned Drive item using metadata and readable-content fetch. Check its title, parent folder, and representative content. Report only the observed Drive URL and ID. Remove the temporary upload artifact after verification.
+Create the pair with the skill's deterministic helper:
 
-Do not run the local `save` command, create a local study index entry, or retain a persistent local copy for a Drive-backed record.
+```text
+python <skill-directory>/scripts/study_memory.py render \
+  --input <record.json> \
+  --output-dir <temporary-directory>
+```
+
+The command validates confirmation and schema, creates one record ID and timestamp, renders both formats, and does not update the local study index.
+
+Upload the generated `.json` as `application/json` and `.md` as `text/markdown` to the same resolved Drive folder. Verify both returned items using metadata and readable-content fetch:
+
+- filenames share the exact basename;
+- both parent IDs match the confirmed folder;
+- JSON parses and contains the returned record ID, course, quiz, topics, and questions;
+- Markdown contains the same record ID and the exact `Question | Answer | Why this is correct` table.
+
+Treat the save as complete only after both files pass verification. If one succeeds and the other fails, report the partial state and retry only the missing file; never upload another copy of the verified companion. If the missing upload still fails, leave the verified Drive item intact, report its observed link, and ask the user whether to retry later or remove the partial record.
+
+After both uploads are verified, remove both temporary artifacts. Do not run the local `save` command, create a local study index entry, or retain persistent local copies for a Drive-backed record. Report both observed Drive links and IDs.
 
 ## Find and study Drive records
 
-1. Search the confirmed memory folder or Drive using concise course, quiz, or topic terms. Prefer the naming convention for course and quiz matches.
-2. Fetch readable content for plausible Markdown records before using them.
-3. If similarly named courses or quizzes match, ask the user to disambiguate instead of combining them.
-4. Build summaries only from fetched records. Cite each record by quiz name, record ID, or observed Drive link.
-5. Do not mix local and Drive records unless the user explicitly asks to search both backends.
+1. Search the confirmed memory folder or Drive using concise course, quiz, topic, or record-ID terms. Prefer the shared filename convention for course and quiz matches.
+2. Group `.json` and `.md` files by their common basename or record ID. Count a pair as one study record, not two.
+3. Fetch and parse the JSON companion first. Validate its schema version and required fields before using it as study context.
+4. Use the Markdown companion for user-facing inspection or links. Confirm its record ID matches the JSON.
+5. For legacy Markdown-only records, fetch the Markdown and use it as a supported fallback. Do not require retroactive JSON creation unless the user requests migration.
+6. If JSON is malformed but Markdown is valid, disclose the malformed companion and use Markdown only when its content is sufficiently complete; do not silently treat malformed JSON as authoritative.
+7. If similarly named courses or quizzes match, ask the user to disambiguate instead of combining them.
+8. Build summaries only from fetched records. Cite each logical record once by quiz name, record ID, and observed Drive link when useful.
+9. Do not mix local and Drive records unless the user explicitly asks to search both backends.
 
 ## Examples
 

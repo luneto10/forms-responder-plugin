@@ -38,6 +38,8 @@ Prepare a UTF-8 JSON object with this shape before calling `study_memory.py save
 - `notes`: non-sensitive context useful for later study.
 - `completed_at`: ISO 8601 timestamp. The save time is used when omitted.
 
-The script adds `record_id` and `saved_at`. It writes a canonical JSON record and a human-readable Markdown record, then adds metadata to `index.json`.
+The script adds `record_id` and `saved_at`. The `save` command writes a canonical JSON record and a human-readable Markdown record, then adds metadata to the local `index.json`.
+
+For Google Drive, use `render --input <record.json> --output-dir <temporary-directory>`. It validates the same schema and creates a matching JSON/Markdown pair with one record ID and basename, but it does not create or modify a local study index. Upload both files and remove the temporary pair only after both Drive items are verified.
 
 Do not include credentials, authentication codes, cookies, student IDs, signatures, payment data, hidden fields, raw page HTML, or unrelated personal information.

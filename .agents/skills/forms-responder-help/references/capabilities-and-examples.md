@@ -54,7 +54,7 @@ or change the class, quiz, topics, or storage choice?
 ### Google Drive study memory
 
 - “Save this quiz to Google Drive in my BIO 101 folder. Do not keep a local copy.”
-- “Use this Google Drive folder for the study document: `<folder URL>`.”
+- “Use this Google Drive folder for the matching JSON and Markdown study record: `<folder URL>`.”
 - “Find my Forms Responder records in Google Drive about ATP.”
 - “Create a study guide from the quizzes in my Google Drive `PSYC 101` folder.”
 
@@ -63,7 +63,7 @@ or change the class, quiz, topics, or storage choice?
 | Choice | Activation | Saved artifacts | Lookup | Duplicate behavior |
 |---|---|---|---|---|
 | Local | Default when Drive is not named | Markdown, JSON, local index | Local course, quiz, topic, or text search | Local only |
-| Google Drive | User explicitly says Google Drive | Markdown document in confirmed Drive folder | Drive search plus content read | No persistent local copy |
+| Google Drive | User explicitly says Google Drive | Matching JSON and Markdown files in the confirmed Drive folder | JSON-first Drive lookup with Markdown fallback | No persistent local copy |
 
 ## Troubleshooting
 

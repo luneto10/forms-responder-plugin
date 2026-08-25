@@ -16,7 +16,7 @@ It can also turn confirmed quiz work into a searchable study library. Records ma
 | Human checkpoints | Waits when an intermediate step requires the user's own click or choice, then resumes from the preserved page state. |
 | Safe handoff | Leaves the form open and reports every answer in a `Question / Answer / Why this is correct` table. |
 | Local study memory | Saves confirmed Markdown and JSON records plus a searchable local index. |
-| Google Drive study memory | Saves a confirmed Markdown record to the chosen Drive folder without retaining another persistent local copy. |
+| Google Drive study memory | Saves a canonical JSON record and matching readable Markdown companion to the chosen Drive folder without persistent local copies. |
 | Study-guide retrieval | Finds saved material by class, quiz, topic, or question content and turns it into an exam review. |
 | Built-in help | Explains the plugin to new users and provides copyable example prompts. |
 
@@ -81,7 +81,7 @@ Each save uses exactly one backend.
 | Backend | When selected | Persistent files | Best for |
 |---|---|---|---|
 | Local | Default when the user does not mention Google Drive | Markdown, JSON, and `index.json` | Private per-computer storage and fast structured lookup |
-| Google Drive | Only when the user explicitly says Google Drive or supplies a Drive folder | One Markdown record in the confirmed Drive folder | Access across computers without a duplicate local record |
+| Google Drive | Only when the user explicitly says Google Drive or supplies a Drive folder | Matching JSON and Markdown files in the confirmed Drive folder | Structured cross-computer lookup plus a readable document, without a local duplicate |
 
 Local and Google Drive records are not combined unless the user explicitly asks to search both.
 
@@ -145,12 +145,24 @@ A typical confirmation is:
 After confirmation, the plugin:
 
 1. resolves or creates the approved folder;
-2. creates a collision-resistant Markdown record;
-3. uploads it as a new Drive file;
-4. verifies the returned title, parent folder, and representative content;
-5. returns the observed Google Drive link and record ID;
-6. removes the temporary upload artifact;
-7. skips the local save command and local index entirely.
+2. validates the record and creates one collision-resistant record ID;
+3. renders a canonical `.json` file and matching readable `.md` file with the same basename;
+4. uploads both files to the confirmed Drive folder;
+5. verifies both titles, parent folders, record IDs, and representative content;
+6. returns both observed Google Drive links and the shared record ID;
+7. removes both temporary upload artifacts;
+8. skips the local save command and local index entirely.
+
+Example Drive layout:
+
+```text
+Forms Responder Study Memory/
+└── BIO 101/
+    ├── 2026-08-24 - BIO 101 - Quiz 3 - 20260824T235716Z-a1b2c3d4.json
+    └── 2026-08-24 - BIO 101 - Quiz 3 - 20260824T235716Z-a1b2c3d4.md
+```
+
+The JSON file is authoritative for structured lookup. The Markdown companion is optimized for reading. Forms Responder groups them by basename or record ID and counts them as one quiz.
 
 Because Drive selection must be explicit, mention **Google Drive** again in a new task. This avoids accidentally sending school content to the cloud based on an old conversation preference.
 
@@ -163,7 +175,7 @@ Examples:
 - “Use only the study records in this Drive folder: `<folder URL>`.”
 - “Search both my local and Google Drive records for ATP.”
 
-Drive lookup searches for likely files, reads the matching content, disambiguates similarly named classes, and cites the observed quiz names, record IDs, or Drive links in the study guide.
+Drive lookup searches for likely pairs, reads and validates JSON first, uses Markdown for human-readable presentation, disambiguates similarly named classes, and cites each logical quiz once. Older Markdown-only records remain supported as a fallback.
 
 ## Moving existing local records to Google Drive
 
@@ -250,7 +262,7 @@ plugins/forms-responder/
 
 ## Development validation
 
-The package includes manifest, skill-structure, Python syntax, confirmed-save, refusal, search, retrieval, and generated-Markdown checks. A Drive write is verified using Drive metadata and readable-content readback when a real user requests a cloud save.
+The package includes manifest, skill-structure, Python syntax, confirmed-save, refusal, search, retrieval, paired JSON/Markdown rendering, shared-ID, collision-resistance, no-index rendering, and local-save regression checks. A real Drive write is verified using Drive metadata and readable-content readback for both uploaded companions.
 
 ## License
 

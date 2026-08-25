@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Cross-platform local storage and lookup for Forms Responder study records."""
+"""Render, store, and find Forms Responder study records across platforms."""
 
 from __future__ import print_function
 
@@ -65,6 +65,13 @@ def slugify(value: str, fallback: str) -> str:
     normalized = unicodedata.normalize("NFKD", value).encode("ascii", "ignore").decode("ascii")
     slug = re.sub(r"[^a-zA-Z0-9]+", "-", normalized).strip("-").lower()
     return slug[:80] or fallback
+
+
+def filename_component(value: str, fallback: str) -> str:
+    normalized = unicodedata.normalize("NFKC", value)
+    cleaned = re.sub(r'[<>:"/\\|?*\x00-\x1f]', "-", normalized)
+    cleaned = re.sub(r"\s+", " ", cleaned).strip(" .-")
+    return cleaned[:48] or fallback
 
 
 def atomic_write_text(path: Path, content: str) -> None:
@@ -210,14 +217,48 @@ def render_markdown(record: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def save_record(root: Path, input_path: Path) -> Dict[str, Any]:
-    validated = validate_record(load_json(input_path))
+def finalize_record(validated: Dict[str, Any]) -> Dict[str, Any]:
+    record = dict(validated)
     saved_at = utc_now()
-    record_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid.uuid4().hex[:8]
-    validated["record_id"] = record_id
-    validated["saved_at"] = saved_at
-    if not validated["completed_at"]:
-        validated["completed_at"] = saved_at
+    record["record_id"] = (
+        datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid.uuid4().hex[:8]
+    )
+    record["saved_at"] = saved_at
+    if not record["completed_at"]:
+        record["completed_at"] = saved_at
+    return record
+
+
+def render_record_pair(output_dir: Path, input_path: Path) -> Dict[str, Any]:
+    record = finalize_record(validate_record(load_json(input_path)))
+    output_dir = output_dir.resolve()
+    date_prefix = record["saved_at"][:10]
+    basename = "{0} - {1} - {2} - {3}".format(
+        date_prefix,
+        filename_component(record["course"], "Course"),
+        filename_component(record["quiz"], "Quiz"),
+        record["record_id"],
+    )
+    json_path = output_dir / (basename + ".json")
+    markdown_path = output_dir / (basename + ".md")
+    if json_path.exists() or markdown_path.exists():
+        raise MemoryErrorWithContext("Refusing to overwrite an existing rendered record pair")
+
+    atomic_write_text(json_path, json.dumps(record, ensure_ascii=False, indent=2) + "\n")
+    atomic_write_text(markdown_path, render_markdown(record))
+    return {
+        "record_id": record["record_id"],
+        "saved_at": record["saved_at"],
+        "basename": basename,
+        "json_path": str(json_path),
+        "markdown_path": str(markdown_path),
+    }
+
+
+def save_record(root: Path, input_path: Path) -> Dict[str, Any]:
+    validated = finalize_record(validate_record(load_json(input_path)))
+    saved_at = validated["saved_at"]
+    record_id = validated["record_id"]
 
     course_slug = slugify(validated["course"], "course")
     quiz_slug = slugify(validated["quiz"], "quiz")
@@ -324,6 +365,14 @@ def build_parser() -> argparse.ArgumentParser:
     save_parser = subparsers.add_parser("save", help="Save a confirmed study record")
     save_parser.add_argument("--input", required=True, help="Path to a UTF-8 record JSON file")
 
+    render_parser = subparsers.add_parser(
+        "render", help="Render a confirmed JSON and Markdown pair without updating the local index"
+    )
+    render_parser.add_argument("--input", required=True, help="Path to a UTF-8 record JSON file")
+    render_parser.add_argument(
+        "--output-dir", required=True, help="Temporary directory for the rendered upload pair"
+    )
+
     search_parser = subparsers.add_parser("search", help="Search saved record metadata")
     add_filters(search_parser)
 
@@ -369,6 +418,10 @@ def main(argv: Optional[List[str]] = None) -> int:
             return 0
         if args.command == "save":
             result = save_record(root, Path(args.input).resolve())
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+            return 0
+        if args.command == "render":
+            result = render_record_pair(Path(args.output_dir), Path(args.input).resolve())
             print(json.dumps(result, ensure_ascii=False, indent=2))
             return 0
         if args.command in ("search", "context"):

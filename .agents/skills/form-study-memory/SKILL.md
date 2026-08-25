@@ -36,8 +36,8 @@ After the form is answered, internally double-checked, summarized, and left unsu
 3. Accept corrections naturally. If the user declines or does not answer, do not create or modify any study-memory file.
 4. After explicit confirmation, create a record that follows the schema reference and sets `save_confirmed` to `true`.
 5. If the confirmed backend is local, save it with `python <skill-directory>/scripts/study_memory.py save --input <record.json>`. Use an isolated temporary input file and remove that temporary file after a successful save.
-6. If the confirmed backend is Google Drive, follow the Drive reference. Verify the connector, target folder, uploaded file, and readable content. Do not create a local library record or index entry.
-7. Report the confirmed backend, course, quiz, topics, record ID, and the saved local path or verified Google Drive link.
+6. If the confirmed backend is Google Drive, follow the Drive reference. Use the script's non-persistent `render` command to create a matching canonical JSON and readable Markdown pair, upload and verify both files, and then remove the temporary pair. Do not create a local library record or index entry.
+7. Report the confirmed backend, course, quiz, topics, record ID, and the saved local paths or both verified Google Drive links.
 
 Do not infer that a user wants saving merely because they previously saved another quiz. Confirmation is required for each completed form workflow.
 
@@ -54,7 +54,7 @@ python <skill-directory>/scripts/study_memory.py search --query "ATP" --json
 
 Use multiple filters together when helpful. Matching is case-insensitive and searches record content, not browser state. If several classes or quizzes are plausible, show the smallest useful set of matches and ask the user which one they mean. Never silently merge records from similarly named courses.
 
-For an explicitly requested Google Drive lookup, use the search and read workflow in the Drive reference instead of the local script. Do not combine local and Drive results unless the user explicitly asks for both.
+For an explicitly requested Google Drive lookup, use the search and read workflow in the Drive reference instead of the local index. Prefer the canonical JSON record, use its Markdown companion for human-readable presentation, and treat a matching pair as one quiz. Do not combine local and Drive results unless the user explicitly asks for both.
 
 ## Building a later study summary
 
@@ -76,5 +76,5 @@ Use `show <record-id> --format markdown` when the user asks to inspect one saved
 - Lookup and summarization are read-only and do not require a new save confirmation.
 - Never edit an existing record silently. A repeated quiz save creates a separate timestamped record so history remains recoverable.
 - If the index is missing or malformed, stop and explain the problem; do not overwrite it with an empty index.
-- A Drive save may use a temporary upload artifact, but remove it after verified upload. Do not retain a persistent local JSON, Markdown, or index entry for the same record.
+- A Drive save uses a temporary JSON/Markdown upload pair. Remove both temporary files after both Drive uploads are verified. Do not retain a persistent local JSON, Markdown, or index entry for the same record.
 - Keep the form-submission boundary unchanged. Saving a study record never submits, finalizes, or changes the browser form.
