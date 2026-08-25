@@ -162,6 +162,6 @@ End with a clear statement that the form was **not submitted** and identify any 
 
 ## Optional post-form study memory
 
-After the required handoff table and the statement that nothing was submitted, infer the likely course or class, quiz or assignment, and study topics from trusted visible context. Ask whether the user wants to save the record under those inferred labels or use different ones. Do not save during that handoff turn or interpret silence as consent.
+After the required handoff table and the statement that nothing was submitted, infer the likely course or class, quiz or assignment, and study topics from trusted visible context. Ask whether the user wants to save the record under those inferred labels or use different ones. If the user previously named Google Drive, include the Drive folder in this confirmation; otherwise propose local storage. Do not save during that handoff turn or interpret silence as consent.
 
-If the user explicitly confirms saving, use the `form-study-memory` skill to create the local record. Keep the browser form open and unchanged. Saving study material is separate from submission and never authorizes clicking a final form control.
+If the user explicitly confirms saving, use the `form-study-memory` skill with exactly the confirmed backend. A Google Drive save must not also create a persistent local record. Keep the browser form open and unchanged. Saving study material is separate from submission and never authorizes clicking a final form control.

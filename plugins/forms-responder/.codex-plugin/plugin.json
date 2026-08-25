@@ -1,7 +1,7 @@
 {
   "name": "forms-responder",
-  "version": "1.1.0",
-  "description": "Careful browser form workflows with source review and optional local study memory; never submits.",
+  "version": "1.2.0+codex.20260825001900",
+  "description": "Careful browser form workflows with source review, local or Google Drive study memory, and built-in help; never submits.",
   "author": {
     "name": "luneto10",
     "url": "https://github.com/luneto10"
@@ -15,13 +15,15 @@
     "surveys",
     "lms",
     "source-review",
-    "study-memory"
+    "study-memory",
+    "google-drive",
+    "help"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Forms Responder",
     "shortDescription": "Careful browser form answers that never submit",
-    "longDescription": "Carefully completes and audits browser forms, LMS pages, surveys, and source-based questions. Reviews required videos and readings, verifies every answer, always leaves final submission to the user, and can save confirmed quiz records locally for later study.",
+    "longDescription": "Carefully completes and audits browser forms, LMS pages, surveys, and source-based questions. Reviews required videos and readings, verifies every answer, always leaves final submission to the user, and can save confirmed quiz records locally or to an explicitly requested Google Drive folder for later study.",
     "developerName": "luneto10",
     "category": "Productivity",
     "capabilities": [
@@ -32,7 +34,7 @@
     "defaultPrompt": [
       "Complete this browser form carefully and stop before submission.",
       "Review this form's video or reading and answer from evidence.",
-      "Create an exam study summary from my saved quiz records."
+      "Explain what Forms Responder can do and show me example prompts."
     ],
     "brandColor": "#2563EB",
     "composerIcon": "./assets/forms-responder-icon.png",
