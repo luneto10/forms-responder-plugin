@@ -1,0 +1,4 @@
+interface:
+  display_name: "Forms Responder Help"
+  short_description: "Explain Forms Responder with examples"
+  default_prompt: "Use $forms-responder-help to explain what this plugin can do and show me examples."

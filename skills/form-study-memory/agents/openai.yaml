@@ -1,0 +1,4 @@
+interface:
+  display_name: "Form Study Memory"
+  short_description: "Save and retrieve confirmed study records"
+  default_prompt: "Use $form-study-memory to save or find my confirmed quiz records locally or in an explicitly named Google Drive folder."

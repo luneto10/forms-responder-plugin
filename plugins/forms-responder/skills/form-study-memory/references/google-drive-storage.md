@@ -6,9 +6,9 @@ Use this workflow only after the user explicitly names Google Drive for the save
 
 Confirm that callable Google Drive tools are present before promising a Drive action. The workflow needs file or folder search, folder creation, file upload, metadata readback, and readable file fetch capabilities.
 
-If the Google Drive plugin is unavailable, disabled, disconnected, or requests authentication:
+If the Google Drive connector or callable Drive integration is unavailable, disabled, disconnected, or requests authentication:
 
-1. Tell the user that Google Drive study memory cannot proceed until the Google Drive plugin is enabled and connected in Codex.
+1. Tell the user that Google Drive study memory cannot proceed until a Google Drive connector or equivalent callable Drive tool is enabled and connected in the current host.
 2. Preserve the completed form and internal ledger.
 3. Do not fall back to local storage unless the user separately asks for a local save.
 4. Resume the Drive save from the preserved record after the user enables or reconnects the plugin.

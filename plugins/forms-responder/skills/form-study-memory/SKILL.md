@@ -19,7 +19,7 @@ Read [references/record-schema.md](references/record-schema.md) when preparing a
 The script resolves the study library in this order:
 
 1. `FORMS_RESPONDER_MEMORY_DIR`, when the user configured one.
-2. `PLUGIN_DATA/study-memory`, when Codex exposes a writable plugin data directory.
+2. `PLUGIN_DATA/study-memory`, when the current host exposes a writable plugin data directory.
 3. The operating system's per-user application-data directory:
    - macOS: `~/Library/Application Support/FormsResponder/StudyMemory`
    - Windows: `%LOCALAPPDATA%\FormsResponder\StudyMemory` with `%APPDATA%` or the user profile as fallbacks.

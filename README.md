@@ -1,6 +1,6 @@
 # Forms Responder
 
-Forms Responder is a portable Codex plugin for careful assistance with browser forms, surveys, quizzes, applications, and LMS pages. It works through visible controls in order, reviews required source material, double-checks its work from an internal answer ledger, and always leaves final submission to the user.
+Forms Responder is a portable Agent Skills package for Codex, Claude Code, Gemini CLI, and Grok Build. It provides careful assistance with browser forms, surveys, quizzes, applications, and LMS pages. It works through visible controls in order, reviews required source material, double-checks its work from an internal answer ledger, and always leaves final submission to the user.
 
 It can also turn confirmed quiz work into a searchable study library. Records may be stored locally on macOS, Windows, or Linux, or saved only to an explicitly requested Google Drive folder.
 
@@ -28,6 +28,19 @@ It can also turn confirmed quiz work into a searchable study library. Records ma
 - `forms-responder-help` — explains capabilities, safety boundaries, storage options, troubleshooting, and example prompts.
 
 Skills are selected automatically from natural-language requests. Slash commands are not normally required.
+
+## Platform compatibility
+
+The instructions, references, and Python study-memory helper are shared across all supported hosts. Each host receives its native package manifest, while generated skill copies are checked against the canonical plugin skills so their behavior cannot drift silently.
+
+| Host | Native packaging | Skill behavior | Extra capability needed for live forms |
+|---|---|---|---|
+| Codex | `.codex-plugin/plugin.json` and Codex marketplace | Full | Browser plugin or supported browser-control surface |
+| Claude Code | `.claude-plugin/plugin.json` and Claude marketplace | Full | Chrome integration, computer-use surface, or trusted browser MCP/tool |
+| Gemini CLI | `gemini-extension.json` with extension skills | Full | Browser-capable extension or trusted MCP/tool |
+| Grok Build | Reads the Claude-compatible plugin natively | Full | Grok browser/computer surface or trusted MCP/tool |
+
+“Full” means the same safety rules, sequential workflow, internal audit, handoff table, and study-memory logic. Installing instructions cannot create a browser, media player, signed-in session, or Google Drive connector that the host does not expose. If a required tool is missing, Forms Responder reports the missing prerequisite and does not pretend that it operated the page or saved to Drive.
 
 ## How a form session works
 
@@ -115,12 +128,12 @@ Advanced users can set `FORMS_RESPONDER_MEMORY_DIR` to choose another local or f
 
 Google Drive is optional and must be explicitly requested. Installing Forms Responder does not automatically install or connect Google Drive.
 
-### 1. Enable Google Drive in Codex
+### 1. Enable Google Drive in the current host
 
-1. Open the Codex **Plugins Directory**.
-2. Find and install **Google Drive**.
-3. Connect the Google account that owns the destination folder.
-4. Start a new task so the Google Drive tools are available.
+1. Install or enable a Google Drive connector for Codex, Claude, Gemini, or Grok.
+2. Connect the Google account that owns the destination folder.
+3. Confirm that the integration can search files, create folders, upload files, and read back metadata and content.
+4. Start a new task or session if the host requires a restart to expose newly installed tools.
 
 If Google Drive is missing, disabled, disconnected, or awaiting authentication, Forms Responder must notify the user. It does not silently save locally instead.
 
@@ -197,24 +210,24 @@ New users can ask naturally:
 
 The help skill explains behavior only. A help question by itself does not authorize browser interaction, folder creation, saving, installation, or setting changes.
 
-## Optional plugins
+## Optional integrations
 
-- **Google Drive:** enables explicitly requested Drive storage and retrieval.
-- **Consensus:** may support outside scientific research when the user or form instructions permit external research. It never replaces required course material or a specifically assigned source.
+- **Google Drive:** enables explicitly requested Drive storage and retrieval when the current host exposes the required operations.
+- **Consensus or an equivalent research connector:** may support outside scientific research when the user or form instructions permit it. It never replaces required course material or a specifically assigned source.
 
-## Requirements
+## Runtime requirements
 
-- ChatGPT desktop with Codex, or Codex CLI.
-- Browser plugin or another supported browser-control surface for live form work.
+- Codex, Claude Code, Gemini CLI, or Grok Build with Agent Skills support.
+- A compatible browser/computer-control surface for live form work.
 - A signed-in browser session for sites requiring authentication.
 - Python 3 only when using the local study-memory backend.
-- Google Drive plugin plus a connected Google account only when using the Drive backend.
+- A callable Google Drive integration plus a connected Google account only when using the Drive backend.
 
 ## Install from the public GitHub repository
 
-The repository is public. Friends do not need access to the owner's GitHub account.
+The repository is public. Friends do not need access to the owner's GitHub account. Installation syntax differs by host.
 
-### Command line
+### Codex
 
 ```bash
 codex plugin marketplace add luneto10/forms-responder-plugin --ref main
@@ -223,9 +236,36 @@ codex plugin add forms-responder@forms-responder
 
 Start a new Codex task after installation so the bundled skills load.
 
-### Codex UI
+In the Codex UI, after the marketplace has been added, restart Codex, open **Plugins Directory**, choose **Forms Responder**, and click **Install**. Start a new task afterward.
 
-After the marketplace has been added, restart Codex, open **Plugins Directory**, choose **Forms Responder**, and click **Install**. Start a new task afterward.
+### Claude Code
+
+Run these as shell commands, or use the corresponding `/plugin` commands inside Claude Code:
+
+```bash
+claude plugin marketplace add luneto10/forms-responder-plugin
+claude plugin install forms-responder@forms-responder
+```
+
+Claude plugin skills use namespaced commands such as `/forms-responder:careful-form-responder`, but natural-language activation also works. Claude Desktop can browse configured marketplaces from **+ → Plugins**.
+
+### Gemini CLI
+
+```bash
+gemini extensions install https://github.com/luneto10/forms-responder-plugin --auto-update
+```
+
+Restart Gemini CLI after installation. The root `gemini-extension.json` and `skills/` directory make the repository directly installable as one extension.
+
+### Grok Build
+
+Grok Build reads Claude Code plugins and marketplaces directly. If the Claude plugin is already installed, Grok can discover it without a second package format. For a local test or a Grok-only installation, clone the repository and load the shared plugin directory:
+
+```bash
+grok --plugin-dir ./plugins/forms-responder
+```
+
+For persistent use, place that plugin directory under `~/.grok/plugins/forms-responder` on macOS/Linux or `%USERPROFILE%\.grok\plugins\forms-responder` on Windows, then enable it from Grok's extensions UI.
 
 ## Update an existing installation
 
@@ -238,12 +278,18 @@ codex plugin add forms-responder@forms-responder
 
 Then start a new task. In the UI, use **Update** if shown; otherwise reinstall Forms Responder after refreshing the marketplace.
 
+Claude Code users run `claude plugin marketplace update forms-responder` and then `claude plugin update forms-responder@forms-responder`. Gemini users who did not enable `--auto-update` run `gemini extensions update forms-responder`. Grok users relying on the Claude installation receive the Claude-updated package; local-directory users pull the repository again and restart Grok.
+
 ## Repository structure
 
 ```text
 .agents/plugins/marketplace.json
+.claude-plugin/marketplace.json
+gemini-extension.json
+skills/                         # generated Gemini extension skills
 plugins/forms-responder/
 ├── .codex-plugin/plugin.json
+├── .claude-plugin/plugin.json
 ├── assets/
 │   └── forms-responder-icon.png
 └── skills/
@@ -257,12 +303,22 @@ plugins/forms-responder/
     │       └── study_memory.py
     └── forms-responder-help/
         └── references/
-            └── capabilities-and-examples.md
+            ├── capabilities-and-examples.md
+            └── platform-compatibility.md
+scripts/
+└── sync_skill_packages.py
 ```
 
 ## Development validation
 
-The package includes manifest, skill-structure, Python syntax, confirmed-save, refusal, search, retrieval, paired JSON/Markdown rendering, shared-ID, collision-resistance, no-index rendering, and local-save regression checks. A real Drive write is verified using Drive metadata and readable-content readback for both uploaded companions.
+The package includes Codex, Claude, and Gemini manifest validation; portable skill-structure and mirror-drift checks; Python syntax; confirmed-save, refusal, search, retrieval, paired JSON/Markdown rendering, shared-ID, collision-resistance, no-index rendering, and local-save regression checks. A real Drive write is verified using Drive metadata and readable-content readback for both uploaded companions.
+
+After changing a canonical skill under `plugins/forms-responder/skills`, regenerate and verify the cross-platform copies:
+
+```bash
+python3 scripts/sync_skill_packages.py sync
+python3 scripts/sync_skill_packages.py check
+```
 
 ## License
 

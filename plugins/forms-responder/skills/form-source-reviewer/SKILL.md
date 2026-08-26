@@ -5,9 +5,9 @@ description: Review source material needed to answer browser-form questions, esp
 
 # Form Source Reviewer
 
-Collect reliable evidence from the material attached to or linked from a form before choosing answers. Use the bundled Browser skill when the source is in the live browser. Pair this skill with `careful-form-responder` when answers will be entered into the form.
+Collect reliable evidence from the material attached to or linked from a form before choosing answers. Use the host's available browser or computer-control capability when the source is in the live browser. Pair this skill with `careful-form-responder` when answers will be entered into the form. If the host cannot access or play the required source, report that limitation and do not claim it was reviewed.
 
-Consensus is optional supporting research. Use it only when the user requests or permits outside scientific research and the question calls for published evidence. Never use Consensus as a substitute for a required video, reading, document, or other assigned source.
+Consensus or an equivalent research connector is optional supporting research. Use it only when it is actually available, the user requests or permits outside scientific research, and the question calls for published evidence. Never use outside research as a substitute for a required video, reading, document, or other assigned source.
 
 ## Evidence rules
 

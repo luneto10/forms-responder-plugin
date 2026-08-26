@@ -5,9 +5,11 @@ description: Explain Forms Responder capabilities, safety boundaries, local and 
 
 # Forms Responder Help
 
-Give a friendly, accurate orientation tailored to the user's question. Explain the relevant capability first, then provide one or two copyable prompts. Do not imply that a browser, Google Drive, Consensus, or another optional plugin is installed unless its capability is visible in the current environment.
+Give a friendly, accurate orientation tailored to the user's question. Explain the relevant capability first, then provide one or two copyable prompts. Do not imply that a browser, Google Drive, Consensus, or another optional integration is installed unless its capability is visible in the current environment.
 
 Read [references/capabilities-and-examples.md](references/capabilities-and-examples.md) when the user asks for a complete overview, onboarding guide, examples, storage comparison, or troubleshooting help.
+
+Read [references/platform-compatibility.md](references/platform-compatibility.md) when the user asks about Codex, Claude, Gemini, Grok, installation on another host, or whether a capability works identically across platforms.
 
 ## Core explanation
 
@@ -28,7 +30,7 @@ Make the non-submission boundary prominent. Explain that the plugin does not gue
 
 - Local memory is the default when Google Drive is not named. It stores Markdown, JSON, and a searchable index in the user's application-data directory.
 - Google Drive is a separate, explicit backend. The user must say Google Drive and identify or approve a destination folder. A successful Drive save creates a canonical JSON record and a matching human-readable Markdown companion there, treats them as one logical quiz, and does not keep persistent local copies.
-- If Google Drive capability is not available or connected, state that clearly and tell the user to enable/connect the Google Drive plugin. Never claim the save succeeded and never silently switch to local storage.
+- If Google Drive capability is not available or connected, state that clearly and tell the user to enable or connect an appropriate Google Drive connector for the current host. Never claim the save succeeded and never silently switch to local storage.
 
 ## Help-only boundary
 

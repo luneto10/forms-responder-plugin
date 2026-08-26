@@ -68,7 +68,7 @@ or change the class, quiz, topics, or storage choice?
 ## Troubleshooting
 
 - **No browser capability:** Explain that a supported browser-control plugin or surface is required for live form interaction.
-- **Google Drive unavailable:** Tell the user to install or enable Google Drive in Codex and connect their Google account. Preserve the unsaved record and do not fall back to local storage without permission.
+- **Google Drive unavailable:** Tell the user to install, enable, or connect a callable Google Drive integration in the current host. Preserve the unsaved record and do not fall back to local storage without permission.
 - **Several folders have the same name:** Ask the user to choose using folder links or paths.
 - **The form asks for a signature, consent, personal experience, or CAPTCHA:** Leave it for the user.
 - **The user asks whether the form was submitted:** State the observed status accurately; Forms Responder is designed to leave submission untouched.
@@ -76,5 +76,5 @@ or change the class, quiz, topics, or storage choice?
 
 ## Optional plugins
 
-- Google Drive enables explicit cloud study-memory storage and retrieval.
-- Consensus may support outside scientific research when outside research is allowed. It never replaces required course material or a source the form specifically requires.
+- A callable Google Drive connector enables explicit cloud study-memory storage and retrieval.
+- Consensus or an equivalent research connector may support outside scientific research when outside research is allowed. It never replaces required course material or a source the form specifically requires.

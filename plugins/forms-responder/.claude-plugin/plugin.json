@@ -1,0 +1,20 @@
+{
+  "name": "forms-responder",
+  "version": "1.4.0",
+  "description": "Careful browser form workflows with source review and optional study memory; never submits.",
+  "author": {
+    "name": "luneto10",
+    "url": "https://github.com/luneto10"
+  },
+  "homepage": "https://github.com/luneto10/forms-responder-plugin",
+  "repository": "https://github.com/luneto10/forms-responder-plugin",
+  "license": "MIT",
+  "keywords": [
+    "forms",
+    "browser",
+    "surveys",
+    "lms",
+    "study-memory"
+  ],
+  "skills": "./skills/"
+}

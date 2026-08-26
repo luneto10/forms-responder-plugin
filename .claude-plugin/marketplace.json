@@ -1,0 +1,20 @@
+{
+  "name": "forms-responder",
+  "owner": {
+    "name": "luneto10"
+  },
+  "metadata": {
+    "description": "Portable Forms Responder plugins for careful, non-submitting browser form assistance."
+  },
+  "plugins": [
+    {
+      "name": "forms-responder",
+      "source": "./plugins/forms-responder",
+      "description": "Careful browser form workflows with source review and optional study memory; never submits.",
+      "version": "1.4.0",
+      "author": {
+        "name": "luneto10"
+      }
+    }
+  ]
+}
